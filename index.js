@@ -1,15 +1,29 @@
+// requirement
 let express = require("express");
-let app = express();
-const port = 25600;
+let bodyParser = require("body-parser");
 
+const port = 25600;     // listen port
+
+let app = express();        // express app
+
+// mark public folder to use css files inside it
 app.use(express.static("public"));
+
+// use body parser
+app.use(bodyParser.urlencoded({extended: true}));
+
+// set ejs as default file
 app.set("view engine", "ejs");
 
+
+// root path
 app.get('/', function (req, res) {
     console.log("Request root");
     res.render('home');
 });
 
+
+// test parameter passing through
 app.get('/para/:para', function (req, res) {
     let pass = req.params.para;
     console.log(req.params);
@@ -17,6 +31,8 @@ app.get('/para/:para', function (req, res) {
     res.render('para', {para: pass});
 });
 
+
+// loop test
 app.get('/loop/:iter', function (req, res) {
     let array = [
         {title: 'Post 1', author: 'Mirage'},
@@ -26,11 +42,14 @@ app.get('/loop/:iter', function (req, res) {
     res.render('loop', {arr: array})
 });
 
+
+// finally, if a request is not recorded in router, return a 404 page
 app.get('*', function (req, res) {
     // console.log("Request invalid page.");
     res.send("404!");
 });
 
+// Listen on certain port
 app.listen(port, function () {
     console.log("Server online.")
 });
