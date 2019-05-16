@@ -1,7 +1,7 @@
 {
   "name": "web-application",
   "version": "1.0.0",
-  "description": "",
+  "description": "Web Application v1",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/yyzhou95/Web-Application.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Boris Mirage",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/yyzhou95/Web-Application/issues"
@@ -23,6 +23,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "ejs": "^2.6.1",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "request": "^2.88.0"
   }
 }

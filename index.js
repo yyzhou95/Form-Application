@@ -1,12 +1,17 @@
 // requirement
 let express = require("express");
 let bodyParser = require("body-parser");
+let request = require("request");
 
 const port = 25600;     // listen port
+const h = {
+    'api_key': "2220d5d038fb48cb89b90a3bffe32da3",
+};
 
 let app = express();        // express app
 
 let arr = ['a', 'b'];
+let metroURL = 'https://api.wmata.com/StationPrediction.svc/json/GetPrediction/C01';
 
 // mark public folder to use css files inside it
 app.use(express.static("public"));
@@ -46,6 +51,28 @@ app.get('/loop/:iter', function (req, res) {
         {title: 'Post 3', author: 'Olivia'},
     ];
     res.render('loop', {arr: array})
+});
+
+// a example of using data that response from API
+app.get('/metro', function (req, res) {
+    let r = res;
+    request({
+        headers: h,
+        uri: metroURL,
+        method: 'GET'
+    }, function (err, res, body) {
+        if (err) {
+            console.log(err);
+        } else {
+
+            if (res.statusCode === 200) {
+                let parseData = JSON.parse(body);       // reorganize data from string into JSON
+                r.send(parseData);
+            } else {
+                console.log(res.statusCode);
+            }
+        }
+    });
 });
 
 // finally, if a request is not recorded in router, return a 404 page
