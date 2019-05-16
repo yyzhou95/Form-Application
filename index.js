@@ -2,16 +2,19 @@ let express = require("express");
 let app = express();
 const port = 25600;
 
+app.use(express.static("public"));
+app.set("view engine", "ejs");
+
 app.get('/', function (req, res) {
     console.log("Request root");
-    res.render('home.ejs');
+    res.render('home');
 });
 
 app.get('/para/:para', function (req, res) {
     let pass = req.params.para;
     console.log(req.params);
     console.log("Request " + pass);
-    res.render('para.ejs', {para: pass});
+    res.render('para', {para: pass});
 });
 
 app.get('/loop/:iter', function (req, res) {
@@ -20,11 +23,11 @@ app.get('/loop/:iter', function (req, res) {
         {title: 'Post 2', author: 'Boris'},
         {title: 'Post 3', author: 'Olivia'},
     ];
-    res.render('loop.ejs', {arr: array})
+    res.render('loop', {arr: array})
 });
 
 app.get('*', function (req, res) {
-    console.log("Request invalid page.");
+    // console.log("Request invalid page.");
     res.send("404!");
 });
 
