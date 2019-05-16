@@ -1,14 +1,14 @@
 {
   "name": "web-application",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple web application",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Boris Mirage",
+  "license": "MIT",
   "dependencies": {
     "express": "^4.16.4"
   }
