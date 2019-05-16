@@ -6,6 +6,8 @@ const port = 25600;     // listen port
 
 let app = express();        // express app
 
+let arr = ['a', 'b'];
+
 // mark public folder to use css files inside it
 app.use(express.static("public"));
 
@@ -15,11 +17,18 @@ app.use(bodyParser.urlencoded({extended: true}));
 // set ejs as default file
 app.set("view engine", "ejs");
 
+app.post("/newpost", function (req, res) {
+    let content = req.body.content;
+    arr.push(content);
+    res.redirect("/");
+
+    // res.send(req.body);
+});
 
 // root path
 app.get('/', function (req, res) {
     console.log("Request root");
-    res.render('home');
+    res.render('home', {arr: arr});
 });
 
 
