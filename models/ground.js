@@ -5,6 +5,13 @@ let postSchema = new mongoose.Schema({
     name: String,
     link: String,
     description: String,
+    uploadUser: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
+    },
     imageRelatedComment: [
         {
             type: mongoose.Schema.Types.ObjectId,

@@ -7,7 +7,7 @@ let router = express.Router();
 // path: "/list"
 
 /* add image */
-router.get('/new', function (req, res) {
+router.get('/new', isLogged, function (req, res) {
     res.render('new')
 });
 
@@ -27,9 +27,13 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
     let name = req.body.name;
     let image = req.body.image;
-    let newCampground = {name: name, link: image};
-    // Create a new campground and save to DB
-    Ground.create(newCampground, function (err, newlyCreated) {
+    let uploader = {
+        id: req.user._id,
+        username: req.user.username
+    };
+    let newGround = {name: name, link: image, uploadUser: uploader};
+    /* Create a new campground and save to DB */
+    Ground.create(newGround, function (err, newlyCreated) {
         if (err) {
             console.log(err);
         } else {
@@ -46,12 +50,24 @@ router.get("/:id", function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            // console.log(found);
-
             // render single image template with that campground
             res.render("singleImage", {component: found});
         }
     });
 });
+
+/**
+ * Middleware function add to requests require authentication.
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*}
+ */
+function isLogged(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
+}
 
 module.exports = router;
