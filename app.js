@@ -14,17 +14,19 @@ let express = require("express"),
 let app = express();
 
 app.set("view engine", "ejs");                                  // set ejs as default file
+
+app.use(express.static(__dirname + "/public"));            // mark public folder to use css files inside it
+app.use(bodyParser.urlencoded({extended: true}));       // expand body structure
+
+/* passport config */
 app.use(require("express-session")({
     secret: 'Test Secret',
     resave: false,
     saveUninitialized: false
 }));
-app.use(express.static(__dirname + "/public"));            // mark public folder to use css files inside it
-app.use(bodyParser.urlencoded({extended: true}));       // expand body structure
 app.use(passport.initialize());
 app.use(passport.session());
-
-passport.use(new LocalStrategy(User.authenticate()));
+passport.use(new LocalStrategy(User.authenticate()));       // User.authenticate() is in user.js plugin
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -34,40 +36,52 @@ mongoose.connect("mongodb://localhost:27017/web_app", {useNewUrlParser: true});
 /* Database init */
 Seed();       // add some test data into database
 
-// root
+/* root */
 app.get('/', function (req, res) {
     res.render('landing')
 });
 
+/* register */
 app.get('/register', function (req, res) {
     res.render('register');
 });
-
 app.post('/register', function (req, res) {
-
+    let newUser = new User({username: req.body.username});
+    User.register(newUser, req.body.password, function (err, newCreatedUser) {
+        if (err) {
+            console.log(err);
+        } else {
+            passport.authenticate("local")(req, res, function () {
+                // console.log(res);
+                res.redirect("/login")
+            })
+        }
+    })
 });
 
+/* login */
 app.get('/login', function (req, res) {
     res.render('login');
 });
-
-// middleware
 app.post('/login', passport.authenticate("local", {
-    successRedirect: '/secret',
+    successRedirect: '/list',     // middleware
     failureRedirect: '/login'
 }), function (req, res) {
-    res.render('login');
+    // empty callback
 });
 
+/* logout */
 app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
 
+/* add image */
 app.get('/list/new', function (req, res) {
     res.render('new')
 });
 
+/* iter all photos */
 app.get('/list', function (req, res) {
     let response = res;
     Ground.find({}, function (err, findRes) {
@@ -78,9 +92,7 @@ app.get('/list', function (req, res) {
         }
     });
 });
-
 app.post('/list', function (req, res) {
-
     res.redirect('/list');
 });
 
@@ -112,6 +124,7 @@ app.get("/list/:id/comment/new", function (req, res) {
     })
 });
 
+/* add comment */
 app.post("/list/:id/comment", function (req, res) {
     Ground.findById(req.params.id, function (err, found) {
         if (err) {
@@ -139,6 +152,22 @@ app.get('*', function (req, res) {
     // console.log("Request invalid page.");
     res.send("404!");
 });
+
+
+/**
+ * Middleware function add to requests require authentication.
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*}
+ */
+function isLogIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next()
+    } else {
+        res.redirect('/login')
+    }
+}
 
 /* listen port */
 let port = process.env.PORT || 25600;
