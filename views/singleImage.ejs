@@ -1,0 +1,15 @@
+<% include partials/header %>
+
+<h1><%= component.name %></h1>
+<figure class="figure">
+    <img src="<%= component.link %>" class="figure-img img-fluid img-thumbnail" alt="IMG">
+    <!--    <figcaption class="figure-caption text-center"><%= component.name %></figcaption>-->
+</figure>
+<h2>Comments</h2>
+<% component.comment.forEach(function(c){ %>
+    <p>
+        <strong><%= c.author %></strong> - <%= c.text %>
+    <p><%= c.createDate %></p>
+    </p>
+<% }) %>
+<% include partials/footer %>

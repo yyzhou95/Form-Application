@@ -1,54 +1,75 @@
-// requirement
-let express = require("express");
-let bodyParser = require("body-parser");
+/* requirement */
+let express = require("express"),
+    bodyParser = require("body-parser"),
+    Ground = require('./models/ground'),
+    mongoose = require("mongoose"),
+    Seed = require('./seed');
 
-const port = 25600;     // listen port
-
-let app = express();        // express app
+/* express app */
+let app = express();
 
 app.use(express.static("public"));                         // mark public folder to use css files inside it
 app.use(bodyParser.urlencoded({extended: true}));       // expand body structure
 app.set("view engine", "ejs");                                  // set ejs as default file
 
-let elements = [
-    {name: "Salmon Creek", link: "https://farm9.staticflickr.com/8442/7962474612_bf2baf67c0.jpg"},
-    {name: "Granite Hill", link: "https://farm1.staticflickr.com/60/215827008_6489cd30c3.jpg"},
-    {name: "Mountain Goat's Rest", link: "https://farm7.staticflickr.com/6057/6234565071_4d20668bbd.jpg"},
-    {name: "Salmon Creek", link: "https://farm9.staticflickr.com/8442/7962474612_bf2baf67c0.jpg"},
-    {name: "Granite Hill", link: "https://farm1.staticflickr.com/60/215827008_6489cd30c3.jpg"},
-    {name: "Mountain Goat's Rest", link: "https://farm7.staticflickr.com/6057/6234565071_4d20668bbd.jpg"},
-    {name: "Salmon Creek", link: "https://farm9.staticflickr.com/8442/7962474612_bf2baf67c0.jpg"},
-    {name: "Granite Hill", link: "https://farm1.staticflickr.com/60/215827008_6489cd30c3.jpg"},
-    {name: "Mountain Goat's Rest", link: "https://farm7.staticflickr.com/6057/6234565071_4d20668bbd.jpg"}
-];
+/* database connection */
+mongoose.connect("mongodb://localhost:27017/web_app", {useNewUrlParser: true});
+
+/* Database init */
+Seed();       // add some test data into database
+
+/* listen port */
+const port = 25600;
 
 // root
 app.get('/', function (req, res) {
     res.render('landing')
 });
 
-app.post('/list', function (req, res) {
-    let n = req.body.name;
-    let i = req.body.image;
-    elements.push({name: n, link: i});
-    res.redirect('/list');
-});
 
 app.get('/list/new', function (req, res) {
     res.render('new')
 });
 
 app.get('/list', function (req, res) {
-    res.render("list", {component: elements});
+    let response = res;
+    Ground.find({}, function (err, findRes) {
+        if (err) {
+            console.log(err);
+        } else {
+            response.render('list', {component: findRes})
+        }
+    });
 });
 
-// finally, if a request is not recorded in router, return a 404 page
+app.post('/list', function (req, res) {
+
+    res.redirect('/list');
+});
+
+/* display more info about :id picture */
+app.get("/list/:id", function (req, res) {
+
+    // find the campground with provided ID
+    Ground.findById(req.params.id).populate("comment").exec(function (err, foundCampground) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(foundCampground.comment);
+
+            // render single image template with that campground
+            res.render("singleImage", {component: foundCampground});
+        }
+    });
+});
+
+/* finally, if a request is not recorded in router, return a 404 page */
 app.get('*', function (req, res) {
     // console.log("Request invalid page.");
     res.send("404!");
 });
 
-// Listen on certain port
+/* Listen on certain port */
 app.listen(port, function () {
     console.log("Server online.")
 });
