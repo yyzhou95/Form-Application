@@ -31,9 +31,13 @@ router.post("/", isLogged, function (req, res) {
                     console.log(err);
                 } else {
 
-                    /* associate comment with image */
+                    /* Add username and id to comment */
+                    comment.author.id = req.user._id;
+                    comment.author.username = req.user.username;
+                    comment.save();     // save comment to db
+                    /* associate comment related to certain image */
                     found.imageRelatedComment.push(comment);
-                    found.save();
+                    found.save();       // save find post to db
                     res.redirect('/list/' + found._id)
                 }
             })

@@ -1,6 +1,5 @@
 <% include partials/header %>
 
-
 <div class="container">
     <div class="row">
         <div class="col-md-3">
@@ -28,7 +27,7 @@
                 <% component.imageRelatedComment.forEach(function(c){ %>
                 <div class="row">
                     <div class="col-md-12">
-                        <strong><%= c.author %></strong>
+                        <strong><%= c.author.username %></strong>
                         <span class="float-right"> <%= c.createDate.toDateString() %></span>
                         <p>
                             <%= c.text %>

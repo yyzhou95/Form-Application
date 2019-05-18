@@ -46,7 +46,7 @@ app.use('/list/:id/comment', commentRoute);
 mongoose.connect("mongodb://localhost:27017/web_app", {useNewUrlParser: true});
 
 /* Database init */
-Seed();       // add some test data into database
+// Seed();       // add some test data into database
 
 /* finally, if a request is not recorded in router, return a 404 page */
 app.get('*', function (req, res) {

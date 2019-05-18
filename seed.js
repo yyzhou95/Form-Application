@@ -17,48 +17,48 @@ function seedDB() {
 
     /* First, remove all Ground instance */
     Ground.remove({}, function (err) {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log("Database has been removed...");
-
-            /* After remove each Ground instance, remove associated Comment */
-            Comment.remove({}, function (err) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log("Comment removed!");
-
-                    /* After remove Comment, create new data */
-                    data.forEach(function (s) {
-
-                        /* Create Ground instance first */
-                        Ground.create(s, function (err, d) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                console.log("item added...");
-
-                                /* Then create associated comment */
-                                Comment.create({
-                                    text: "APPLE IS THE BEST",
-                                    author: "Boris",
-                                }, function (err, comment) {
-                                    if (err) {
-                                        console.log(err);
-                                    } else {
-                                        d.imageRelatedComment.push(comment);        // add to associated Ground instance
-                                        d.save();                       // save to db
-                                        console.log("A new test comment is added.");
-                                        // console.log(d.comment);
-                                    }
-                                })
-                            }
-                        })
-                    });
-                }
-            });
-        }
+        // if (err) {
+        //     console.log(err)
+        // } else {
+        //     console.log("Database has been removed...");
+        //
+        //     /* After remove each Ground instance, remove associated Comment */
+        //     Comment.remove({}, function (err) {
+        //         if (err) {
+        //             console.log(err);
+        //         } else {
+        //             console.log("Comment removed!");
+        //
+        //             /* After remove Comment, create new data */
+        //             data.forEach(function (s) {
+        //
+        //                 /* Create Ground instance first */
+        //                 Ground.create(s, function (err, d) {
+        //                     if (err) {
+        //                         console.log(err);
+        //                     } else {
+        //                         console.log("item added...");
+        //
+        //                         /* Then create associated comment */
+        //                         Comment.create({
+        //                             text: "APPLE IS THE BEST",
+        //                             author: "Boris",
+        //                         }, function (err, comment) {
+        //                             if (err) {
+        //                                 console.log(err);
+        //                             } else {
+        //                                 d.imageRelatedComment.push(comment);        // add to associated Ground instance
+        //                                 d.save();                       // save to db
+        //                                 console.log("A new test comment is added.");
+        //                                 // console.log(d.comment);
+        //                             }
+        //                         })
+        //                     }
+        //                 })
+        //             });
+        //         }
+        //     });
+        // }
     });
 }
 

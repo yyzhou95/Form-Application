@@ -22,8 +22,20 @@ router.get('/', function (req, res) {
         }
     });
 });
+
+/* Add new images */
 router.post('/', function (req, res) {
-    res.redirect('/');
+    let name = req.body.name;
+    let image = req.body.image;
+    let newCampground = {name: name, link: image};
+    // Create a new campground and save to DB
+    Ground.create(newCampground, function (err, newlyCreated) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect('/list');
+        }
+    });
 });
 
 /* display more info about :id picture */
