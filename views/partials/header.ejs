@@ -23,17 +23,20 @@
                 <a class="nav-link active" href="/list/new">Add Image</a>
             </li>
         </ul>
-
         <ul class="nav navbar-nav list-inline">
-            <li>
-                <a href="/login" class="btn btn-light"> Login </a>
-            </li>
-            <li>
-                <a href="/register" class="btn btn-light"> Sign Up </a>
-            </li>
-            <li>
-                <a href="/logout" class="btn btn-light"> Login out </a>
-            </li>
+            <% if (currentUser) { %>
+                <li><a href="#" class="btn btn-light"><strong><%= currentUser.username %></strong></a></li>
+                <li>
+                    <a href="/logout" class="btn btn-light"> Log out </a>
+                </li>
+            <% }else { %>
+                <li>
+                    <a href="/login" class="btn btn-light"> Login </a>
+                </li>
+                <li>
+                    <a href="/register" class="btn btn-light"> Sign Up </a>
+                </li>
+            <% } %>
         </ul>
     </div>
 </nav>

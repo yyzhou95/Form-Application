@@ -3,7 +3,6 @@ let express = require("express"),
     bodyParser = require("body-parser"),
     passport = require("passport"),
     LocalStrategy = require("passport-local"),
-    passportLocalMongoose = require("passport-local-mongoose"),
     User = require('./models/user'),
     mongoose = require("mongoose"),
     Ground = require('./models/ground'),
@@ -29,6 +28,12 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));       // User.authenticate() is in user.js plugin
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+/* middleware to pass user */
+app.use(function (req, res, next) {
+    res.locals.currentUser = req.user;
+    next();
+});
 
 /* database connection */
 mongoose.connect("mongodb://localhost:27017/web_app", {useNewUrlParser: true});
@@ -113,7 +118,7 @@ app.get("/list/:id", function (req, res) {
 });
 
 /* GET and POST new comment */
-app.get("/list/:id/comment/new", function (req, res) {
+app.get("/list/:id/comment/new", isLogged, function (req, res) {
     Ground.findById(req.params.id, function (err, found) {
         if (err) {
             console.log(err);
@@ -125,7 +130,7 @@ app.get("/list/:id/comment/new", function (req, res) {
 });
 
 /* add comment */
-app.post("/list/:id/comment", function (req, res) {
+app.post("/list/:id/comment", isLogged, function (req, res) {
     Ground.findById(req.params.id, function (err, found) {
         if (err) {
             console.log(err);
@@ -161,12 +166,11 @@ app.get('*', function (req, res) {
  * @param next
  * @returns {*}
  */
-function isLogIn(req, res, next) {
+function isLogged(req, res, next) {
     if (req.isAuthenticated()) {
-        return next()
-    } else {
-        res.redirect('/login')
+        return next();
     }
+    res.redirect('/login');
 }
 
 /* listen port */
