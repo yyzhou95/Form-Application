@@ -9,7 +9,7 @@ let express = require("express"),
 /* express app */
 let app = express();
 
-app.use(express.static("public"));                         // mark public folder to use css files inside it
+app.use(express.static(__dirname + "/public"));                         // mark public folder to use css files inside it
 app.use(bodyParser.urlencoded({extended: true}));       // expand body structure
 app.set("view engine", "ejs");                                  // set ejs as default file
 
