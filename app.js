@@ -3,6 +3,7 @@ let express = require("express"),
     bodyParser = require("body-parser"),
     Ground = require('./models/ground'),
     mongoose = require("mongoose"),
+    Comment = require('./models/comment'),
     Seed = require('./seed');
 
 /* express app */
@@ -51,17 +52,51 @@ app.post('/list', function (req, res) {
 app.get("/list/:id", function (req, res) {
 
     // find the campground with provided ID
-    Ground.findById(req.params.id).populate("imageRelatedComment").exec(function (err, foundCampground) {
+    Ground.findById(req.params.id).populate("imageRelatedComment").exec(function (err, found) {
         if (err) {
             console.log(err);
         } else {
-            console.log(foundCampground);
+            // console.log(found);
 
             // render single image template with that campground
-            res.render("singleImage", {component: foundCampground});
+            res.render("singleImage", {component: found});
         }
     });
 });
+
+/* GET and POST new comment */
+app.get("/list/:id/comment/new", function (req, res) {
+    Ground.findById(req.params.id, function (err, found) {
+        if (err) {
+            console.log(err);
+
+        } else {
+            res.render("comment/new", {component: found})
+        }
+    })
+});
+
+app.post("/list/:id/comment", function (req, res) {
+    Ground.findById(req.params.id, function (err, found) {
+        if (err) {
+            console.log(err);
+        } else {
+            // console.log(req.body.commentForm);
+            Comment.create(req.body.commentForm, function (err, comment) {
+                if (err) {
+                    console.log(err);
+                } else {
+
+                    /* associate comment with image */
+                    found.imageRelatedComment.push(comment);
+                    found.save();
+                    res.redirect('/list/' + found._id)
+                }
+            })
+        }
+    })
+});
+
 
 /* finally, if a request is not recorded in router, return a 404 page */
 app.get('*', function (req, res) {

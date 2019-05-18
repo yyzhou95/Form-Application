@@ -8,8 +8,8 @@
 <h2>Comments</h2>
 <% component.imageRelatedComment.forEach(function(c){ %>
     <p>
-        <strong><%= c.author %></strong> - <%= c.text %>
-    <p><%= c.createDate %></p>
+        <strong><%= c.author %></strong> at <%= c.createDate.toDateString() %> - <%= c.text %>
     </p>
 <% }) %>
+<a href="/list/<%= component.id %>/comment/new" class="btn btn-success">Add a comment</a>
 <% include partials/footer %>
