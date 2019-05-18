@@ -51,11 +51,11 @@ app.post('/list', function (req, res) {
 app.get("/list/:id", function (req, res) {
 
     // find the campground with provided ID
-    Ground.findById(req.params.id).populate("comment").exec(function (err, foundCampground) {
+    Ground.findById(req.params.id).populate("imageRelatedComment").exec(function (err, foundCampground) {
         if (err) {
             console.log(err);
         } else {
-            console.log(foundCampground.comment);
+            console.log(foundCampground);
 
             // render single image template with that campground
             res.render("singleImage", {component: foundCampground});

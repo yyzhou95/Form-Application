@@ -41,13 +41,13 @@ function seedDB() {
 
                                 /* Then create associated comment */
                                 Comment.create({
-                                    text: 'APPLE IS THE BEST! MICROSOFT SUCKS!',
-                                    author: 'Mirage'
+                                    text: "APPLE IS THE BEST",
+                                    author: "Boris",
                                 }, function (err, comment) {
                                     if (err) {
                                         console.log(err);
                                     } else {
-                                        d.comment.push(comment);        // add to associated Ground instance
+                                        d.imageRelatedComment.push(comment);        // add to associated Ground instance
                                         d.save();                       // save to db
                                         console.log("A new test comment is added.");
                                         // console.log(d.comment);

@@ -5,10 +5,10 @@ let postSchema = new mongoose.Schema({
     name: String,
     link: String,
     description: String,
-    comment: [
+    imageRelatedComment: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Comment"      // name of the model, should be identical to the export model in comment.js
+            ref: "CommentModel"      // name of the model, should be identical to the export model in comment.js
         }
     ]
 });

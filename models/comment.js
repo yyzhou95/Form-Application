@@ -12,4 +12,4 @@ let commentSchema = new mongoose.Schema({
 
 
 /* Export model, note that the 'Comment' is a ref name that would use in Ground */
-module.exports = mongoose.model('Comment', commentSchema);
+module.exports = mongoose.model('CommentModel', commentSchema);
