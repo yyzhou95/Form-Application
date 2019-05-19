@@ -1,3 +1,9 @@
+/**
+ * @file This is the index of middleware.
+ *
+ * It provides the function of checking user authentication.
+ */
+
 let Ground = require('../models/ground'),
     Comment = require('../models/comment');
 let middlewareObject = {};
@@ -65,6 +71,7 @@ middlewareObject.isLoggedIn = function (req, res, next) {
     if (req.isAuthenticated()) {        // is user login?
         return next();      // if login, then continue to do following things
     }
+    req.flash("require-log-in", "Please log in first...");
     res.redirect('/login');
 };
 
