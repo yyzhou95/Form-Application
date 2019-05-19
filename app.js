@@ -67,6 +67,6 @@ let port = process.env.PORT || 25600;
 let ip = process.env.IP || 'localhost';
 
 /* Listen on certain port */
-app.listen(port, process.env.IP, function () {
-    console.log("Server online at " + port + " " + ip)
+app.listen(port, ip, function () {
+    console.log("Server online at port: " + port + " and address: " + ip)
 });
