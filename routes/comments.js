@@ -13,9 +13,8 @@ router.get("/new", Middleware.isLoggedIn, function (req, res) {
     Ground.findById(req.params.id, function (err, found) {
         if (err) {
             console.log(err);
-
         } else {
-            res.render("comment/newComment", {component: found})
+            res.render("comment/new-comment", {component: found})
         }
     })
 });
@@ -52,7 +51,7 @@ router.get('/:comment_id/edit', Middleware.checkCommentOwner, function (req, res
         if (err) {
             console.log(err);
         } else {
-            res.render("comment/editComment", {postID: req.params.id, comment: foundComment})
+            res.render("comment/edit-comment", {postID: req.params.id, comment: foundComment})
         }
     });
 });

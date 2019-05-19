@@ -32,7 +32,7 @@ router.post('/register', function (req, res) {
 
 /* login */
 router.get('/login', function (req, res) {
-    res.render('auth/login');
+    res.render('auth/login', {msg: req.flash("require-log-in")});
 });
 router.post('/login', passport.authenticate("local", {
     successRedirect: '/list',     // middleware
