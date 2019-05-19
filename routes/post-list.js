@@ -28,11 +28,12 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
     let name = req.body.name;
     let image = req.body.image;
+    let content = req.body.content;
     let uploader = {
         id: req.user._id,
         username: req.user.username
     };
-    let newGround = {name: name, link: image, uploadUser: uploader};
+    let newGround = {name: name, link: image, description: content, uploadUser: uploader};
     /* Create a new campground and save to DB */
     Ground.create(newGround, function (err, newlyCreated) {
         if (err) {
