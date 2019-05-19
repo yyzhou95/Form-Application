@@ -7,20 +7,22 @@
             <h1>Image List</h1>
         </div>
     </header>
-    <p>
-        <a href="/list/new" class="btn btn-primary">Add a new image!</a>
-    </p>
     <div class="row">
-        <div class="col-12 text-center">
+        <div class="col-md-3">
+            <p class="lead">Hello!</p>
+            <div class="list-group">
+                <li class="list-group-item"><a href="/list/new">Add a new post!</a></li>
+                <li class="list-group-item">Info 2</li>
+                <li class="list-group-item">Info 3</li>
+            </div>
         </div>
         <% component.forEach(function (c) { %>
-            <div class="col-md-3 col-sm-6">
+            <div class="col-md-9 col-sm-6">
                 <figure class="figure">
                     <img src="<%= c.link %>" class="figure-img img-fluid img-thumbnail" alt="IMG">
                     <figcaption class="figure-caption text-center"><%= c.name %></figcaption>
+                    <a href="/list/<%= c.id %>" class="btn btn-info">More Info</a>
                 </figure>
-                <a href="/list/<%= c.id %>" class="btn btn-info">More Info</a>
-
             </div>
         <% }) %>
     </div>
