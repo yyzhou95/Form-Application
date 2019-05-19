@@ -1,7 +1,8 @@
 # Form-Application
 
-This simple application contains several parts:
+This application contains the front end web pages and back end functions that support user authentication, comment, edit and delete.
 
-1. Front end web page with CSS.
-2. Back end functions based on `Node.js` and `express`.
+## Dependency
 
+1. `Bootstrap 4`
+2. `Node.js`
