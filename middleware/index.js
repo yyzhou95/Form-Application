@@ -4,7 +4,7 @@
  * It provides the function of checking user authentication.
  */
 
-let Ground = require('../models/ground'),
+let Ground = require('../models/post'),
     Comment = require('../models/comment');
 let middlewareObject = {};
 

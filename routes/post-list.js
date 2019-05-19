@@ -1,7 +1,7 @@
 /* requirement */
 let express = require("express"),
     Middleware = require('../middleware/index'),
-    Ground = require('../models/ground');
+    Post = require('../models/post');
 
 let router = express.Router();
 
@@ -10,7 +10,7 @@ let router = express.Router();
 /* iter all photos */
 router.get('/', function (req, res) {
     let response = res;
-    Ground.find({}, function (err, findRes) {
+    Post.find({}, function (err, findRes) {
         if (err) {
             console.log(err);
         } else {
@@ -33,9 +33,10 @@ router.post('/', function (req, res) {
         id: req.user._id,
         username: req.user.username
     };
-    let newGround = {name: name, link: image, description: content, uploadUser: uploader};
+    let newPost = {name: name, link: image, postContent: content, uploadUser: uploader};
+
     /* Create a new campground and save to DB */
-    Ground.create(newGround, function (err, newlyCreated) {
+    Post.create(newPost, function (err, newlyCreated) {
         if (err) {
             console.log(err);
         } else {
@@ -48,14 +49,14 @@ router.post('/', function (req, res) {
     });
 });
 
-/* add image */
+/* Add a new post */
 router.get('/new', Middleware.isLoggedIn, function (req, res) {
     res.render('post/new-post')
 });
 
-/* Edit */
+/* Edit existing post */
 router.get('/:id/edit', Middleware.checkPostOwner, function (req, res) {
-    Ground.findById(req.params.id, function (err, foundPost) {
+    Post.findById(req.params.id, function (err, foundPost) {
         if (err) {
             console.log(err);
         } else {
@@ -68,9 +69,13 @@ router.get('/:id/edit', Middleware.checkPostOwner, function (req, res) {
     });
 });
 
-/* Update */
+/* Update existing post */
 router.put('/:id', Middleware.checkPostOwner, function (req, res) {
-    Ground.findOneAndUpdate(req.params.id, {name: req.body.name, link: req.body.image}, function (err, updateData) {
+    Post.findOneAndUpdate(req.params.id, {
+        name: req.body.name,
+        link: req.body.image,
+        postContent: req.body.content
+    }, function (err, updateData) {
         if (err) {
             console.log(err);
         } else {
@@ -78,7 +83,6 @@ router.put('/:id', Middleware.checkPostOwner, function (req, res) {
                 req.flash("error", "No item found.");
                 return res.redirect("back");
             }
-
             req.flash("success", "Update succeed!");
             res.redirect('/list/' + req.params.id);
         }
@@ -87,7 +91,7 @@ router.put('/:id', Middleware.checkPostOwner, function (req, res) {
 
 /* Delete */
 router.delete('/:id', Middleware.checkPostOwner, function (req, res) {
-    Ground.findByIdAndRemove(req.params.id, function (err) {
+    Post.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
             console.log(err);
         } else {
@@ -103,7 +107,7 @@ router.delete('/:id', Middleware.checkPostOwner, function (req, res) {
 router.get("/:id", function (req, res) {
 
     // find the campground with provided ID
-    Ground.findById(req.params.id).populate("imageRelatedComment").exec(function (err, found) {
+    Post.findById(req.params.id).populate("imageRelatedComment").exec(function (err, found) {
         if (err) {
             console.log(err);
         } else {

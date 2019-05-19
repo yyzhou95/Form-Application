@@ -1,5 +1,5 @@
-/* requirement */
-let Ground = require('../models/ground'),
+/* Requirement */
+let Post = require('../models/post'),
     Comment = require('../models/comment'),
     Middleware = require('../middleware/index'),
     express = require("express");
@@ -10,7 +10,7 @@ let router = express.Router({mergeParams: true});
 
 /* GET and POST new comment */
 router.get("/new", Middleware.isLoggedIn, function (req, res) {
-    Ground.findById(req.params.id, function (err, found) {
+    Post.findById(req.params.id, function (err, found) {
         if (err) {
             console.log(err);
         } else {
@@ -27,7 +27,7 @@ router.get("/new", Middleware.isLoggedIn, function (req, res) {
 
 /* Add comment */
 router.post("/", Middleware.isLoggedIn, function (req, res) {
-    Ground.findById(req.params.id, function (err, found) {
+    Post.findById(req.params.id, function (err, found) {
         if (err) {
             console.log(err);
         } else {

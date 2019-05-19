@@ -1,5 +1,5 @@
 let Comment = require('./models/comment'),
-    Ground = require('./models/ground');
+    Ground = require('./models/post');
 
 
 let data = [

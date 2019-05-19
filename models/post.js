@@ -4,7 +4,7 @@ let mongoose = require('mongoose');
 let postSchema = new mongoose.Schema({
     name: String,
     link: String,
-    description: String,
+    postContent: String,
     uploadUser: {
         id: {
             type: mongoose.Schema.Types.ObjectId,

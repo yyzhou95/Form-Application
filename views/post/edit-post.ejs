@@ -11,6 +11,10 @@
             <input class="form-control" type="text" name="image" value="<%= element.link %>">
         </div>
         <div class="form-group">
+            <textarea class="form-control new-content" name="content"
+                      id="edit-post-content"><%= element.postContent %></textarea>
+        </div>
+        <div class="form-group">
             <button class="btn btn-primary btn-block">Submit!</button>
             <a href="/list/<%= element._id %>" class="btn btn-danger btn-block">Go Back</a>
         </div>
