@@ -3,10 +3,11 @@ let express = require("express"),
     bodyParser = require("body-parser"),
     passport = require("passport"),
     LocalStrategy = require("passport-local"),
-    User = require('./models/user'),
     mongoose = require("mongoose"),
     methodOverride = require("method-override"),
-    Seed = require('./seed');
+    flash = require('connect-flash'),
+    // Seed = require('./seed'),
+    User = require('./models/user');
 
 /* express app */
 let app = express();
@@ -16,6 +17,7 @@ app.set("view engine", "ejs");                                  // set ejs as de
 app.use(express.static(__dirname + "/public"));            // mark public folder to use css files inside it
 app.use(bodyParser.urlencoded({extended: true}));       // expand body structure
 app.use(methodOverride('_method'));
+app.use(flash());
 
 /* passport config */
 app.use(require("express-session")({
@@ -37,7 +39,7 @@ app.use(function (req, res, next) {
 
 /* Require routers and use them */
 let indexRoute = require("./routes/index"),
-    listRoute = require("./routes/postList"),
+    listRoute = require("./routes/post-list"),
     commentRoute = require("./routes/comments");
 
 app.use('/', indexRoute);
