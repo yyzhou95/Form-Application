@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
 
 /* register */
 router.get('/register', function (req, res) {
-    res.render('register');
+    res.render('auth/register');
 });
 router.post('/register', function (req, res) {
     let newUser = new User({username: req.body.username});
@@ -32,7 +32,7 @@ router.post('/register', function (req, res) {
 
 /* login */
 router.get('/login', function (req, res) {
-    res.render('login');
+    res.render('auth/login');
 });
 router.post('/login', passport.authenticate("local", {
     successRedirect: '/list',     // middleware

@@ -5,6 +5,7 @@ let express = require("express"),
     LocalStrategy = require("passport-local"),
     User = require('./models/user'),
     mongoose = require("mongoose"),
+    methodOverride = require("method-override"),
     Seed = require('./seed');
 
 /* express app */
@@ -14,6 +15,7 @@ app.set("view engine", "ejs");                                  // set ejs as de
 
 app.use(express.static(__dirname + "/public"));            // mark public folder to use css files inside it
 app.use(bodyParser.urlencoded({extended: true}));       // expand body structure
+app.use(methodOverride('_method'));
 
 /* passport config */
 app.use(require("express-session")({

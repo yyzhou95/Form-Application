@@ -8,7 +8,7 @@ let router = express.Router();
 
 /* add image */
 router.get('/new', isLogged, function (req, res) {
-    res.render('new')
+    res.render('post/newPost')
 });
 
 /* iter all photos */
@@ -18,7 +18,7 @@ router.get('/', function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            response.render('list', {component: findRes})
+            response.render('post/postList', {component: findRes})
         }
     });
 });
@@ -42,6 +42,41 @@ router.post('/', function (req, res) {
     });
 });
 
+/* Edit */
+router.get('/:id/edit', checkPostOwner, function (req, res) {
+    Ground.findById(req.params.id, function (err, foundPost) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("post/editPost", {element: foundPost});
+        }
+    });
+});
+
+/* Update */
+router.put('/:id', checkPostOwner, function (req, res) {
+    Ground.findOneAndUpdate(req.params.id, {name: req.body.name, link: req.body.image}, function (err, updateData) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect('/list/' + req.params.id);
+        }
+    })
+});
+
+/* Delete */
+router.delete('/:id', checkPostOwner, function (req, res) {
+    Ground.findByIdAndRemove(req.params.id, function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect('/list')
+        }
+    })
+});
+
+// TODO: add confirmation before delete
+
 /* display more info about :id picture */
 router.get("/:id", function (req, res) {
 
@@ -51,7 +86,7 @@ router.get("/:id", function (req, res) {
             console.log(err);
         } else {
             // render single image template with that campground
-            res.render("singleImage", {component: found});
+            res.render("post/singlePost", {component: found});
         }
     });
 });
@@ -68,6 +103,32 @@ function isLogged(req, res, next) {
         return next();
     }
     res.redirect('/login');
+}
+
+/**
+ * Check if current user is the request resource's owner.
+ * If it is the owner, then give it the authority to edit, remove corresponding resource.
+ * Otherwise, add event to notify user that they do not have the access to do it.
+ * @param req
+ * @param res
+ * @param next
+ */
+function checkPostOwner(req, res, next) {
+    if (req.isAuthenticated()) {
+        Ground.findById(req.params.id, function (err, foundPost) {
+            if (err) {
+                console.log(err);
+            } else {
+                if (foundPost.uploadUser.id.equals(req.user.id)) {
+                    return next();
+                } else {
+                    res.redirect('back');
+                }
+            }
+        })      // TODO: add function as notification
+    } else {
+        res.redirect("back");
+    }
 }
 
 module.exports = router;
