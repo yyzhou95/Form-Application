@@ -1,0 +1,82 @@
+body {
+  background-color: #000;
+}
+
+#landing-header {
+  z-index: 1;
+  position: relative;
+  text-align: center;
+  padding-top: 40vh;
+}
+
+#landing-header h1 {
+  color: #fff;
+}
+
+.slide-show {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.slide-show li {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 0;
+  animation: imageAnimation 50s linear infinite; 
+}
+
+.slide-show li:nth-child(1) {
+  background-image: url(https://natureconservancy-h.assetsadobe.com/is/image/content/dam/tnc/nature/en/photos/Lake_AngelaReed.jpg?crop=0,235,4032,2217&wid=4000&hei=2200&scl=1.008)
+}
+.slide-show li:nth-child(2) {
+  background-image: url(https://static.wixstatic.com/media/86526c_e833878ee8ac4daf868684d07a40b18f.jpg/v1/fill/w_2322,h_1548,al_c,q_90,usm_0.66_1.00_0.01/86526c_e833878ee8ac4daf868684d07a40b18f.webp);
+  animation-delay: 10s; 
+}
+.slide-show li:nth-child(3) {
+  background-image: url(https://www.wabe.org/wp-content/uploads/2019/04/ourplanetfrozen1_custom-fcc515bca23202fe00a812c9af672a2fd3e72bc8-1.jpg);
+  animation-delay: 20s; 
+}
+.slide-show li:nth-child(4) {
+  background-image: url(https://images.unsplash.com/photo-1471513671800-b09c87e1497c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80);
+  animation-delay: 30s; 
+}
+.slide-show li:nth-child(5) {
+  background-image: url(https://images.unsplash.com/photo-1500993855538-c6a99f437aa7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80);
+  animation-delay: 40s; 
+}
+
+@keyframes imageAnimation { 
+  0% { 
+    opacity: 0; 
+    animation-timing-function: ease-in;
+  }
+  10% {
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  20% {
+    opacity: 1
+  }
+  30% {
+    opacity: 0
+  }
+}
+
+/* Older browser support - .no-css-animations class added by modernizr */
+.no-css-animations .slide-show li {
+    opacity: 1;
+}
