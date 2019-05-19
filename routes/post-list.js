@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            response.render('post/postList', {component: findRes})
+            response.render('post/post-list', {component: findRes})
         }
     });
 });
@@ -40,7 +40,7 @@ router.post('/', function (req, res) {
 
 /* add image */
 router.get('/new', Middleware.isLoggedIn, function (req, res) {
-    res.render('post/newPost')
+    res.render('post/new-post')
 });
 
 /* Edit */
@@ -49,7 +49,7 @@ router.get('/:id/edit', Middleware.checkPostOwner, function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            res.render("post/editPost", {element: foundPost});
+            res.render("post/edit-post", {element: foundPost});
         }
     });
 });
@@ -87,7 +87,7 @@ router.get("/:id", function (req, res) {
             console.log(err);
         } else {
             // render single image template with that campground
-            res.render("post/singlePost", {component: found});
+            res.render("post/show-post", {component: found});
         }
     });
 });
