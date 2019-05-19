@@ -20,10 +20,12 @@ router.post('/register', function (req, res) {
     let newUser = new User({username: req.body.username});
     User.register(newUser, req.body.password, function (err, newCreatedUser) {
         if (err) {
+            req.flash("error", err.message);
             console.log(err);
         } else {
             passport.authenticate("local")(req, res, function () {
-                // console.log(res);
+                req.flash("success", "Successfully log in, welcome :)");
+
                 res.redirect("/login")
             })
         }
@@ -32,11 +34,13 @@ router.post('/register', function (req, res) {
 
 /* login */
 router.get('/login', function (req, res) {
-    res.render('auth/login', {msg: req.flash("require-log-in")});
+    res.render('auth/login');
 });
 router.post('/login', passport.authenticate("local", {
     successRedirect: '/list',     // middleware
-    failureRedirect: '/login'
+    failureRedirect: '/login',
+    failureFlash: 'Invalid username or password.',
+    successFlash: 'Welcome!'
 }), function (req, res) {
     // empty callback
 });
@@ -44,6 +48,7 @@ router.post('/login', passport.authenticate("local", {
 /* logout */
 router.get('/logout', function (req, res) {
     req.logout();
+    req.flash("success", "Logged out succeed!");
     res.redirect('/');
 });
 

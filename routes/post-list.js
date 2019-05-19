@@ -14,6 +14,11 @@ router.get('/', function (req, res) {
         if (err) {
             console.log(err);
         } else {
+
+            if (!findRes) {
+                req.flash("error", "No item found.");
+                return res.redirect("back");
+            }
             response.render('post/post-list', {component: findRes})
         }
     });
@@ -33,6 +38,10 @@ router.post('/', function (req, res) {
         if (err) {
             console.log(err);
         } else {
+            if (!newlyCreated) {
+                req.flash("error", "No item created.");
+                return res.redirect("back");
+            }
             res.redirect('/list');
         }
     });
@@ -49,6 +58,10 @@ router.get('/:id/edit', Middleware.checkPostOwner, function (req, res) {
         if (err) {
             console.log(err);
         } else {
+            if (!foundPost) {
+                req.flash("error", "No item found.");
+                return res.redirect("back");
+            }
             res.render("post/edit-post", {element: foundPost});
         }
     });
@@ -60,6 +73,10 @@ router.put('/:id', Middleware.checkPostOwner, function (req, res) {
         if (err) {
             console.log(err);
         } else {
+            if (!updateData) {
+                req.flash("error", "No item found.");
+                return res.redirect("back");
+            }
             res.redirect('/list/' + req.params.id);
         }
     })
@@ -71,12 +88,13 @@ router.delete('/:id', Middleware.checkPostOwner, function (req, res) {
         if (err) {
             console.log(err);
         } else {
+
+            // TODO: add confirmation before delete
             res.redirect('/list')
         }
     })
 });
 
-// TODO: add confirmation before delete
 
 /* display more info about :id picture */
 router.get("/:id", function (req, res) {

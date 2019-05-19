@@ -14,23 +14,38 @@ router.get("/new", Middleware.isLoggedIn, function (req, res) {
         if (err) {
             console.log(err);
         } else {
+
+            if (!found) {
+                req.flash("error", "No item found.");
+                return res.redirect("back");
+            }
+
             res.render("comment/new-comment", {component: found})
         }
     })
 });
 
-/* add comment */
+/* Add comment */
 router.post("/", Middleware.isLoggedIn, function (req, res) {
     Ground.findById(req.params.id, function (err, found) {
         if (err) {
             console.log(err);
         } else {
+
+            if (!found) {
+                req.flash("error", "No item found.");
+                return res.redirect("back");
+            }
+
             // console.log(req.body.commentForm);
             Comment.create(req.body.commentForm, function (err, comment) {
                 if (err) {
                     console.log(err);
                 } else {
-
+                    if (!comment) {
+                        req.flash("error", "No comment found.");
+                        return res.redirect("back");
+                    }
                     /* Add username and id to comment */
                     comment.author.id = req.user._id;
                     comment.author.username = req.user.username;
@@ -38,6 +53,8 @@ router.post("/", Middleware.isLoggedIn, function (req, res) {
                     /* associate comment related to certain image */
                     found.imageRelatedComment.push(comment);
                     found.save();       // save find post to db
+
+                    // TODO: add notification and confirmation for delete
                     res.redirect('/list/' + found._id)
                 }
             })
@@ -51,6 +68,10 @@ router.get('/:comment_id/edit', Middleware.checkCommentOwner, function (req, res
         if (err) {
             console.log(err);
         } else {
+            if (!foundComment) {
+                req.flash("error", "Item not found.");
+                return res.redirect("back");
+            }
             res.render("comment/edit-comment", {postID: req.params.id, comment: foundComment})
         }
     });
@@ -60,6 +81,10 @@ router.put('/:comment_id', Middleware.checkCommentOwner, function (req, res) {
         if (err) {
             console.log(err);
         } else {
+            if (!updated) {
+                req.flash("error", "No item updated.");
+                return res.redirect("back");
+            }
             res.redirect('/list/' + req.params.id);
         }
     })
@@ -71,6 +96,7 @@ router.delete('/:comment_id', Middleware.checkCommentOwner, function (req, res) 
         if (err) {
             console.log(err);
         } else {
+
             // TODO: add notification and confirmation for delete
             res.redirect('/list/' + req.params.id)
         }

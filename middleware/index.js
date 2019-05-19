@@ -20,16 +20,19 @@ middlewareObject.checkCommentOwner = function (req, res, next) {
     if (req.isAuthenticated()) {        // is user login?
         Comment.findById(req.params.comment_id, function (err, foundComment) {
             if (err) {
+                req.flash("error", "Can not find request comment!");
                 console.log(err);
             } else {
                 if (foundComment.author.id.equals(req.user.id)) {      // is current user same as comment poster?
                     return next();      // if same user, then continue actions
                 } else {
+                    req.flash("error", "You do not have the permission!");
                     res.redirect('back');
                 }
             }
-        })      // TODO: add function as notification
+        })
     } else {
+        req.flash("require-log-in", "Please log in first :)");
         res.redirect("back");
     }
 };
@@ -46,16 +49,20 @@ middlewareObject.checkPostOwner = function (req, res, next) {
     if (req.isAuthenticated()) {
         Ground.findById(req.params.id, function (err, foundPost) {
             if (err) {
+                req.flash("error", "Can not find request post!");
                 console.log(err);
+                res.redirect('back');
             } else {
                 if (foundPost.uploadUser.id.equals(req.user.id)) {
                     return next();
                 } else {
+                    req.flash("error", "You do not have the permission!");
                     res.redirect('back');
                 }
             }
-        })      // TODO: add function as notification
+        })
     } else {
+        req.flash("require-log-in", "Please log in first :)");
         res.redirect("back");
     }
 };
@@ -71,7 +78,7 @@ middlewareObject.isLoggedIn = function (req, res, next) {
     if (req.isAuthenticated()) {        // is user login?
         return next();      // if login, then continue to do following things
     }
-    req.flash("require-log-in", "Please log in first...");
+    req.flash("require-log-in", "Please log in first :)");
     res.redirect('/login');
 };
 

@@ -34,6 +34,9 @@ passport.deserializeUser(User.deserializeUser());
 /* Middleware to pass user. Note that this function should be placed ahead of router! */
 app.use(function (req, res, next) {
     res.locals.currentUser = req.user;
+    res.locals.requireLogIn = req.flash('require-log-in');
+    res.locals.error = req.flash('error');
+    res.locals.success = req.flash('success');
     next();
 });
 
