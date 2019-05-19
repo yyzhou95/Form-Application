@@ -1,14 +1,17 @@
 <% include ../partials/header %>
 
 <div class="container">
-    <h1 class="text-center">Add image!</h1>
+    <h1 class="text-center">Create a new post!</h1>
 
     <form action="/list" method="post" style="width: 30%; margin: 0 auto">
         <div class="form-group">
-            <input class="form-control" type="text" name="name" placeholder="Image Name">
+            <input class="form-control" type="text" name="name" placeholder="Title">
         </div>
         <div class="form-group">
             <input class="form-control" type="text" name="image" placeholder="Image Link">
+        </div>
+        <div class="form-group">
+            <textarea class="form-control new-content" name="content" id="new-post-content" placeholder="What's in your mind?"></textarea>
         </div>
         <div class="form-group">
             <button class="btn btn-primary btn-block">Submit!</button>
