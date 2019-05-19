@@ -1,15 +1,11 @@
 /* requirement */
 let express = require("express"),
+    Middleware = require('../middleware/index'),
     Ground = require('../models/ground');
 
 let router = express.Router();
 
 // path: "/list"
-
-/* add image */
-router.get('/new', isLogged, function (req, res) {
-    res.render('post/newPost')
-});
 
 /* iter all photos */
 router.get('/', function (req, res) {
@@ -42,8 +38,13 @@ router.post('/', function (req, res) {
     });
 });
 
+/* add image */
+router.get('/new', Middleware.isLoggedIn, function (req, res) {
+    res.render('post/newPost')
+});
+
 /* Edit */
-router.get('/:id/edit', checkPostOwner, function (req, res) {
+router.get('/:id/edit', Middleware.checkPostOwner, function (req, res) {
     Ground.findById(req.params.id, function (err, foundPost) {
         if (err) {
             console.log(err);
@@ -54,7 +55,7 @@ router.get('/:id/edit', checkPostOwner, function (req, res) {
 });
 
 /* Update */
-router.put('/:id', checkPostOwner, function (req, res) {
+router.put('/:id', Middleware.checkPostOwner, function (req, res) {
     Ground.findOneAndUpdate(req.params.id, {name: req.body.name, link: req.body.image}, function (err, updateData) {
         if (err) {
             console.log(err);
@@ -65,7 +66,7 @@ router.put('/:id', checkPostOwner, function (req, res) {
 });
 
 /* Delete */
-router.delete('/:id', checkPostOwner, function (req, res) {
+router.delete('/:id', Middleware.checkPostOwner, function (req, res) {
     Ground.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
             console.log(err);
@@ -90,45 +91,5 @@ router.get("/:id", function (req, res) {
         }
     });
 });
-
-/**
- * Middleware function add to requests require authentication.
- * @param req
- * @param res
- * @param next
- * @returns {*}
- */
-function isLogged(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/login');
-}
-
-/**
- * Check if current user is the request resource's owner.
- * If it is the owner, then give it the authority to edit, remove corresponding resource.
- * Otherwise, add event to notify user that they do not have the access to do it.
- * @param req
- * @param res
- * @param next
- */
-function checkPostOwner(req, res, next) {
-    if (req.isAuthenticated()) {
-        Ground.findById(req.params.id, function (err, foundPost) {
-            if (err) {
-                console.log(err);
-            } else {
-                if (foundPost.uploadUser.id.equals(req.user.id)) {
-                    return next();
-                } else {
-                    res.redirect('back');
-                }
-            }
-        })      // TODO: add function as notification
-    } else {
-        res.redirect("back");
-    }
-}
 
 module.exports = router;
