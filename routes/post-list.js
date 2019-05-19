@@ -77,6 +77,8 @@ router.put('/:id', Middleware.checkPostOwner, function (req, res) {
                 req.flash("error", "No item found.");
                 return res.redirect("back");
             }
+
+            req.flash("success", "Update succeed!");
             res.redirect('/list/' + req.params.id);
         }
     })
