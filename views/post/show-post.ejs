@@ -40,13 +40,14 @@
                         <strong><%= comment.author.username %></strong>
                         <span class="float-right"> <%= comment.createDate.toDateString() %></span>
                         <p>
-                            <%= comment.text %>
+                            <%- comment.text %>
                         </p>
                         <br>
                         <% if (currentUser && comment.author.id.equals(currentUser._id)) { %>
                             <a href="/list/<%= component.id %>/comment/<%= comment._id %>/edit"
                                class="btn btn-sm btn-warning">Edit</a>
-                            <form action="/list/<%= component.id %>/comment/<%= comment._id %>?_method=DELETE" method="post"
+                            <form action="/list/<%= component.id %>/comment/<%= comment._id %>?_method=DELETE"
+                                  method="post"
                                   class="delete-form">
                                 <button class="btn btn-sm btn-danger">Delete</button>
                             </form>

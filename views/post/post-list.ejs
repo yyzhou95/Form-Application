@@ -4,7 +4,7 @@
 
     <header class="jumbotron">
         <div class="container">
-            <h1>Image List</h1>
+            <h1>Post List</h1>
         </div>
     </header>
     <div class="row">
@@ -12,19 +12,20 @@
             <p class="lead">Hello!</p>
             <div class="list-group">
                 <li class="list-group-item"><a href="/list/new">Add a new post!</a></li>
-                <li class="list-group-item">Info 2</li>
-                <li class="list-group-item">Info 3</li>
+                <li class="list-group-item">Tag</li>
+                <li class="list-group-item">Most Popular</li>
             </div>
         </div>
-        <% component.forEach(function (c) { %>
-            <div class="col-md-9 col-sm-6">
-                <figure class="figure">
-                    <img src="<%= c.link %>" class="figure-img img-fluid img-thumbnail" alt="IMG">
+        <div class="col-md-6 col-sm-6">
+            <% component.forEach(function (c) { %>
+
+                <div class="col-lg-9">
+                    <img src="<%= c.link %>" alt="" class="img-thumbnail img-fluid">
                     <figcaption class="figure-caption text-center"><%= c.name %></figcaption>
-                    <a href="/list/<%= c.id %>" class="btn btn-info">More Info</a>
-                </figure>
-            </div>
-        <% }) %>
+                    <a href="/list/<%= c.id %>" class="btn btn-info float-right">More Info</a>
+                </div>
+            <% }) %>
+        </div>
     </div>
 </div>
 

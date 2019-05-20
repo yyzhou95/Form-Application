@@ -71,11 +71,12 @@ router.get('/:id/edit', Middleware.checkPostOwner, function (req, res) {
 
 /* Update existing post */
 router.put('/:id', Middleware.checkPostOwner, function (req, res) {
-    Post.findOneAndUpdate(req.params.id, {
+    let updateContent = {
         name: req.body.name,
         link: req.body.image,
         postContent: req.body.content
-    }, function (err, updateData) {
+    };
+    Post.findOneAndUpdate(req.params.id, updateContent, {new: true}, function (err, updateData) {
         if (err) {
             console.log(err);
         } else {
@@ -83,6 +84,7 @@ router.put('/:id', Middleware.checkPostOwner, function (req, res) {
                 req.flash("error", "No item found.");
                 return res.redirect("back");
             }
+            // console.log(updateData);
             req.flash("success", "Update succeed!");
             res.redirect('/list/' + req.params.id);
         }
