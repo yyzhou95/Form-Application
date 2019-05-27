@@ -1,9 +1,20 @@
 <% include ../partials/header %>
 
 <div class="container">
-    <h1 class="text-center">Create a new post!</h1>
+    <h1 class="text-center">Create a new post</h1>
+    <h4 class="text-center">(Support Markdown)</h4>
+    <br>
+    <form action="/list" method="post" style="width: 100%; margin: 0 auto">
 
-    <form action="/list" method="post" style="width: 30%; margin: 0 auto">
+        <div class="form-group float-right" style="width: 10%">
+            <a href="/list" class="btn btn-outline-danger btn-block">Go Back</a>
+        </div>
+        <div class="form-group float-right" style="width: 1rem">
+        </div>
+        <div class="form-group float-right" style="width: 10%  ">
+            <button class="btn btn-outline-primary btn-block">Submit!</button>
+        </div>
+
         <div class="form-group">
             <input class="form-control" type="text" name="name" placeholder="Title">
         </div>
@@ -11,12 +22,10 @@
             <input class="form-control" type="text" name="image" placeholder="Image Link">
         </div>
         <div class="form-group">
-            <textarea class="form-control new-content" name="content" id="new-post-content" placeholder="What's in your mind?"></textarea>
+            <textarea class="form-control new-content" name="content" id="new-post-content"
+                      placeholder="What's in your mind?" style="height: 100rem"></textarea>
         </div>
-        <div class="form-group">
-            <button class="btn btn-primary btn-block">Submit!</button>
-            <a href="/list" class="btn btn-danger btn-block">Go Back</a>
-        </div>
+
     </form>
 </div>
 
