@@ -1,13 +1,15 @@
 /* requirement */
 let express = require("express"),
     Middleware = require('../middleware/index'),
+    showdown = require('showdown'),
     Post = require('../models/post');
 
-let router = express.Router();
+let router = express.Router(),
+    converter = new showdown.Converter();
 
 // path: "/list"
 
-/* iter all photos */
+/* Iter all posts */
 router.get('/', function (req, res) {
     let response = res;
     Post.find({}, function (err, findRes) {
@@ -24,11 +26,16 @@ router.get('/', function (req, res) {
     });
 });
 
-/* Add new images */
+/* Create a new post */
+router.get('/new', Middleware.isLoggedIn, function (req, res) {
+    res.render('post/new-post')
+});
+
+/* Add a new post to database */
 router.post('/', function (req, res) {
     let name = req.body.name;
     let image = req.body.image;
-    let content = req.body.content;
+    let content = converter.makeHtml(req.body.content);
     let uploader = {
         id: req.user._id,
         username: req.user.username
@@ -47,11 +54,6 @@ router.post('/', function (req, res) {
             res.redirect('/list');
         }
     });
-});
-
-/* Add a new post */
-router.get('/new', Middleware.isLoggedIn, function (req, res) {
-    res.render('post/new-post')
 });
 
 /* Edit existing post */
@@ -76,7 +78,7 @@ router.put('/:id', Middleware.checkPostOwner, function (req, res) {
     let updateContent = {
         name: req.body.name,
         link: req.body.image,
-        postContent: req.body.content
+        postContent: converter.makeHtml(req.body.content)
     };
     Post.findOneAndUpdate(req.params.id, updateContent, {new: true}, function (err, updateData) {
         if (err) {
@@ -111,7 +113,7 @@ router.delete('/:id', Middleware.checkPostOwner, function (req, res) {
 });
 
 
-/* display more info about :id picture */
+/* Show the selected :id post */
 router.get("/:id", function (req, res) {
 
     // find the campground with provided ID

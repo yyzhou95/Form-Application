@@ -11,11 +11,12 @@
             </div>
         </div>
         <div class="col-md-9">
+            <h2><%= component.name %></h2>
             <div class="thumbnail">
+
                 <img class="img-thumbnail img-fluid" src="<%= component.link %>">
                 <div class="caption">
-                    <h4><a><%= component.name %></a></h4>
-                    <p><%= component.postContent %></p>
+                    <p><%- component.postContent %></p>
                     <p>
                         <em>Submitted by: <%= component.uploadUser.username %></em>
                     </p>
