@@ -67,6 +67,9 @@ let port = process.env.PORT || 25600;
 let ip = process.env.IP || 'localhost';
 
 /* Listen on certain port */
-app.listen(port, ip, function () {
+// app.listen(port, ip, function () {
+//     console.log("Server online at port: " + port + " and address: " + ip)
+// });
+app.listen(port, function () {      // remove ip for server to listen on 0.0.0.0 instead of 127.0.0.1
     console.log("Server online at port: " + port + " and address: " + ip)
 });
