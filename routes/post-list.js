@@ -59,6 +59,8 @@ router.get('/:id/edit', Middleware.checkPostOwner, function (req, res) {
     Post.findById(req.params.id, function (err, foundPost) {
         if (err) {
             console.log(err);
+            req.flash("error", "Error occurred during editing.");
+            return res.redirect("back");
         } else {
             if (!foundPost) {
                 req.flash("error", "No item found.");
@@ -79,6 +81,8 @@ router.put('/:id', Middleware.checkPostOwner, function (req, res) {
     Post.findOneAndUpdate(req.params.id, updateContent, {new: true}, function (err, updateData) {
         if (err) {
             console.log(err);
+            req.flash("error", "Error occurred during editing.");
+            return res.redirect("back");
         } else {
             if (!updateData) {
                 req.flash("error", "No item found.");
@@ -96,6 +100,8 @@ router.delete('/:id', Middleware.checkPostOwner, function (req, res) {
     Post.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
             console.log(err);
+            req.flash("error", "Error occurred during removing.");
+            return res.redirect("back");
         } else {
 
             // TODO: add confirmation before delete
@@ -112,6 +118,8 @@ router.get("/:id", function (req, res) {
     Post.findById(req.params.id).populate("imageRelatedComment").exec(function (err, found) {
         if (err) {
             console.log(err);
+            req.flash("error", "Error occurred.");
+            return res.redirect("back");
         } else {
             // render single image template with that campground
             res.render("post/show-post", {component: found});

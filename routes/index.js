@@ -20,13 +20,13 @@ router.post('/register', function (req, res) {
     let newUser = new User({username: req.body.username});
     User.register(newUser, req.body.password, function (err, newCreatedUser) {
         if (err) {
-            req.flash("error", err.message);
+            req.flash("error", "User name is invalid");
+            res.redirect("back");
             console.log(err);
         } else {
             passport.authenticate("local")(req, res, function () {
                 req.flash("success", "Successfully log in, welcome :)");
-
-                res.redirect("/login")
+                res.redirect("/list")
             })
         }
     })

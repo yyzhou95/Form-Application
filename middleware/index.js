@@ -62,7 +62,7 @@ middlewareObject.checkPostOwner = function (req, res, next) {
             }
         })
     } else {
-        req.flash("require-log-in", "Please log in first :)");
+        req.flash("require-log-in", "Please log in or sign up first :)");
         res.redirect("back");
     }
 };
