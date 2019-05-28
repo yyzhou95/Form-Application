@@ -8,7 +8,7 @@ let router = express.Router({mergeParams: true});
 
 // path: "/"
 
-/* root */
+/* Root */
 router.get('/', function (req, res) {
     res.render('index')
 });
