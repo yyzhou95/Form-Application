@@ -12,6 +12,7 @@ This application contains the front end web pages and back end functions that su
 1. User register/login, authenticate.
 2. Create, modify post with a optional hero image.
 3. Create, modify comment under a post.
+4. Markdown support for adding/editing post/comment.
 
 ## Deploy
 
