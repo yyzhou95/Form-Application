@@ -1,6 +1,7 @@
 /* requirement */
 let express = require("express"),
     passport = require("passport"),
+    Middleware = require("../middleware/index"),
     User = require('../models/user');
 
 let router = express.Router({mergeParams: true});
@@ -50,6 +51,11 @@ router.get('/logout', function (req, res) {
     req.logout();
     req.flash("success", "Logged out succeed!");
     res.redirect('/');
+});
+
+/* User Page */
+router.get('/user/:id', Middleware.isLoggedIn, function (req, res) {
+    res.render('user/profile', {user: req.user})
 });
 
 module.exports = router;
